@@ -1,5 +1,6 @@
 import datetime as dt
-import pandas_datareader.data as web
+import pandas_datareader.data as pdr
+import yfinance as yf
 import numpy as np
 from plot.plot_stocks import plot_stocks
 
@@ -27,6 +28,7 @@ def get_date(date_type):
 
 def get_stock(stock_number, start, end):
     while True:
+        yf.pdr_override()  # Work-around while pdr.DataReader() has a bug
         try:
             # Set the prompt based on the value of stock_number
             if stock_number == "first":
@@ -38,10 +40,10 @@ def get_stock(stock_number, start, end):
 
             stock_ticker = str(input(prompt)).upper()
 
-            stock_data = web.DataReader(stock_ticker, 'yahoo', start, end)
+            stock_data = pdr.DataReader(stock_ticker, start, end)
             print(f"The {stock_number} stock ticker is: {stock_ticker}")
             return stock_data
-        except:
+        except ValueError:
             # If a ValueError is raised (e.g. invalid month or day), print an error message and continue the loop
             print(f"Invalid stock ticker. Please try again.")
 
@@ -60,5 +62,6 @@ r = corrcoef_matrix[0, 1]
 r_sq = r ** 2
 print("R =", r)
 print("R2 =", r_sq)
+print()
 
 plot_stocks(stock_1, stock_2)

@@ -5,4 +5,8 @@ pyvenv.cfg
 
 .idea
 
-__pycache__
+src/plot/__pycache__
+
+stock-correlation.png
+
+src/stock-correlation.png
